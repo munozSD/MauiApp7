@@ -1,4 +1,4 @@
-﻿@page "/asde"
+﻿@page "/AlumnoList"
 @using MauiApp7.Data
 @using MauiApp7.Models
 @using Microsoft.Data.SqlClient
@@ -46,7 +46,7 @@ else
 @code {
     private List<Alumno> alumnos = new();
 
-    protected override async Task OnInitializedAsync()
+    protected override async Task  OnInitializedAsync()
     {
         await CargarAlumnos();
     }
