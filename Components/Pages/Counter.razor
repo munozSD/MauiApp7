@@ -1,0 +1,62 @@
+﻿@page "/Lista"
+@using MauiApp7.Data
+@using MauiApp7.Models
+@using Microsoft.Data.SqlClient
+@inject IJSRuntime JSRuntime
+
+<h2>Lista de Alumnos</h2>
+
+<button @onclick="CargarAlumnos" class="btn btn-primary">Cargar Alumnos</button>
+
+@if (alumnos == null)
+{
+    <p>⚠️ Haz clic en "Cargar Alumnos" para mostrar los registros.</p>
+}
+else if (alumnos.Count == 0)
+{
+    <p>📭 No hay alumnos registrados.</p>
+}
+else
+{
+    <table class="table table-striped mt-3">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Nombre Completo</th>
+                <th>CURP</th>
+                <th>Matrícula</th>
+                <th>Teléfono</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var a in alumnos)
+            {
+                <tr>
+                    <td>@a.Id_Alumno</td>
+                    <td>@a.Nombre @a.ApePat @a.ApeMat</td>
+                    <td>@a.CURP</td>
+                    <td>@a.Matricula</td>
+                    <td>@a.Telefono</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@code {
+    private List<Alumno>? alumnos;
+
+    private async Task CargarAlumnos()
+    {
+        try
+        {
+            alumnos = await DatabaseConnection.ObtenerAlumnosAsync();
+        }
+        catch (Exception ex)
+        {
+            // En producción, muestra un mensaje amigable
+            await JSRuntime.InvokeVoidAsync("alert", $"Error al cargar: {ex.Message}");
+            alumnos = new List<Alumno>();
+        }
+    }
+}   

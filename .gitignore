@@ -1,0 +1,113 @@
+# ------------------------
+# .NET MAUI + Blazor Hybrid
+# ------------------------
+
+# Build results
+bin/
+obj/
+AppPackages/
+*.appx
+*.appxbundle
+*.appxupload
+*.cer
+*.pfx
+*.zip
+
+# macOS
+**/bin/Debug/net*/**/macOS/
+**/bin/Debug/net*/**/maccatalyst/
+**/obj/maccatalyst/
+**/obj/macOS/
+
+# Android
+**/bin/Debug/net*/**/android/
+**/obj/android/
+android/
+*.apk
+*.aab
+
+# iOS
+**/bin/Debug/net*/**/ios/
+**/obj/ios/
+ios/
+*.ipa
+
+# Windows
+**/bin/Debug/net*/**/win10-*/ 
+**/bin/Debug/net*/**/windows/
+**/obj/windows/
+*.exe
+*.dll
+*.pdb
+*.winmd
+*.pri
+*.priconfg
+*.appxrecipe
+*.msix
+*.msixbundle
+
+# SQLite database (¡NO ignores si usas una base de datos de ejemplo fija!)
+# Pero sí ignora la base de datos generada en runtime
+escuela.db
+*.db
+!wwwroot/sample-data/*.db
+
+# Visual Studio
+.vs/
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+
+# ReSharper
+_ReSharper*/
+*.[Rr]e[Ss]harper
+*.DotSettings
+
+# Rider
+.idea/
+
+# VS Code
+.vscode/
+
+# NuGet
+packages/
+*.nupkg
+*.nuspec
+nuget.exe
+
+# Logs and temp files
+*.log
+*.tmp
+*.temp
+Thumbs.db
+Desktop.ini
+
+# User-specific files
+*.user
+*.userprefs
+
+# Blazor
+/_framework/
+/wwwroot/_content/
+
+# MAUI assets (no ignorar Resources/, pero sí cachés)
+**/Resources/**/cache/
+**/Resources/**/temp/
+
+# Launch settings (puede contener rutas locales)
+Properties/launchSettings.json
+
+# Secrets (¡nunca debes commitear esto!)
+secrets.json
+appsettings.Development.json
+appsettings.*.json
+!appsettings.json
+
+# Coverage results
+coverage/
+*.coverage
+*.coveragexml
+
+# Roslyn
+*.ide/

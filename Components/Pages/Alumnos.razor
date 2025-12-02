@@ -1,0 +1,104 @@
+﻿@page "/AlumnoLIst"
+@using MauiApp7.Data
+@using MauiApp7.Models
+@inject IJSRuntime JSRuntime
+
+<h2>Gestión de Alumnos</h2>
+
+<button class="btn btn-success" @onclick="AbrirFormularioCrear">➕ Nuevo Alumno</button>
+
+@if (mostrarFormulario)
+{
+    <AlumnoForm Alumno="@alumnoEnEdicion" OnSave="AlGuardar" OnCancel="CancelarFormulario" />
+}
+else
+{
+    @if (alumnos == null)
+    {
+        <p>Cargando...</p>
+    }
+    else if (alumnos.Count == 0)
+    {
+        <p>No hay alumnos.</p>
+    }
+    else
+    {
+        <table class="table table-striped mt-3">
+            <thead>
+                <tr>
+                    <th>Nombre</th>
+                    <th>Matrícula</th>
+                    <th>Teléfono</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var a in alumnos)
+                {
+                    <tr>
+                        <td>@a.Nombre @a.ApePat</td>
+                        <td>@a.Matricula</td>
+                        <td>@a.Telefono</td>
+                        <td>
+                            <button class="btn btn-sm btn-warning" @onclick="() => EditarAlumno(a)">editar</button>
+                            <button class="btn btn-sm btn-danger" @onclick="() => EliminarAlumno(a.Id_Alumno)">Eliminar</button>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+}
+
+@code {
+    private List<Alumno> alumnos = new();
+    private bool mostrarFormulario = false;
+    private Alumno alumnoEnEdicion = new();
+
+    protected override async Task OnInitializedAsync() => await CargarAlumnos();
+
+    private async Task CargarAlumnos()
+    {
+        alumnos = await DatabaseConnection.ObtenerAlumnosAsync();
+        StateHasChanged();
+    }
+
+    private void AbrirFormularioCrear()
+    {
+        alumnoEnEdicion = new();
+        mostrarFormulario = true;
+    }
+
+    private void EditarAlumno(Alumno a)
+    {
+        alumnoEnEdicion = new Alumno
+        {
+            Id_Alumno = a.Id_Alumno,
+            Nombre = a.Nombre,
+            ApePat = a.ApePat,
+            ApeMat = a.ApeMat,
+            CURP = a.CURP,
+            Matricula = a.Matricula,
+            Telefono = a.Telefono
+        };
+        mostrarFormulario = true;
+    }
+
+    private async Task EliminarAlumno(int id)
+    {
+        var confirm = await JSRuntime.InvokeAsync<bool>("confirm", "¿Eliminar este alumno?");
+        if (confirm)
+        {
+            await DatabaseConnection.EliminarAlumnoAsync(id);
+            await CargarAlumnos();
+        }
+    }
+
+    private async Task AlGuardar()
+    {
+        await CargarAlumnos();
+        mostrarFormulario = false;
+    }
+
+    private void CancelarFormulario() => mostrarFormulario = false;
+}

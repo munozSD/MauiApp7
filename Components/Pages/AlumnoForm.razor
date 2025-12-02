@@ -1,0 +1,48 @@
+﻿@page "/asd"
+@using MauiApp7.Data
+@using MauiApp7.Models
+
+
+
+@if (Alumno != null)
+{
+    <EditForm Model="@Alumno" OnValidSubmit="OnValidSubmit">
+        <div class="card p-3 mb-3">
+            <h5>@(Alumno.Id_Alumno == 0 ? "Nuevo Alumno" : "Editar Alumno")</h5>
+
+            <InputText @bind-Value="Alumno.Nombre" class="form-control mb-2" placeholder="Nombre" />
+            <InputText @bind-Value="Alumno.ApePat" class="form-control mb-2" placeholder="Apellido Paterno" />
+            <InputText @bind-Value="Alumno.ApeMat" class="form-control mb-2" placeholder="Apellido Materno" />
+            <InputText @bind-Value="Alumno.CURP" class="form-control mb-2" placeholder="CURP" />
+            <InputText @bind-Value="Alumno.Matricula" class="form-control mb-2" placeholder="Matrícula" />
+            <InputText @bind-Value="Alumno.Telefono" class="form-control mb-2" placeholder="Teléfono" />
+
+            <button type="submit" class="btn btn-primary">Guardar</button>
+            <button type="button" class="btn btn-secondary" @onclick="OnCancel">Cancelar</button>
+        </div>
+    </EditForm>
+}
+
+@code {
+    [Parameter] public Alumno? Alumno { get; set; }
+    [Parameter] public EventCallback OnSave { get; set; }
+    [Parameter] public EventCallback OnCancel { get; set; }
+
+    private async Task OnValidSubmit()
+    {
+        if (Alumno != null)
+        {
+            if (Alumno.Id_Alumno == 0)
+            {
+                // Insertar
+                await DatabaseConnection.InsertarAlumnoAsync(Alumno);
+            }
+            else
+            {
+                // Actualizar
+                await DatabaseConnection.ActualizarAlumnoAsync(Alumno);
+            }
+            await OnSave.InvokeAsync();
+        }
+    }
+}
